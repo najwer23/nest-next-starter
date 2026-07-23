@@ -26,7 +26,7 @@ find . \( -name node_modules -o -name dist -o -name .next \) -type d -prune -exe
 
 Services:
 
-- API NESTJS: http://localhost:3001/api-nestjs
+- API NESTJS: http://localhost:3001
 - API NESTJS Swagger: http://localhost:3001/api/docs
 - Web: http://localhost:3000
 - API EXPRESS: http://localhost:3002
