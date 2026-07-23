@@ -1,12 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersService } from './users.service';
-import { UserService } from '../entities/user/user.service';
-import {
-  UserAlreadyExistsException,
-  UserNotFoundException,
-} from '../entities/user/user.exceptions';
 import { Role, User } from '@prisma/client';
 import * as argon2 from 'argon2';
+import { UserAlreadyExistsException, UserNotFoundException } from '../entities/user/user.exceptions';
+import { UserService } from '../entities/user/user.service';
+import { UsersService } from './users.service';
 
 jest.mock('argon2');
 
@@ -37,10 +34,7 @@ describe('UsersService', () => {
     };
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        UsersService,
-        { provide: UserService, useValue: mockUserService },
-      ],
+      providers: [UsersService, { provide: UserService, useValue: mockUserService }],
     }).compile();
 
     service = module.get<UsersService>(UsersService);
@@ -82,13 +76,9 @@ describe('UsersService', () => {
     });
 
     it('throws when user not found', async () => {
-      userService.getByIdOrThrow.mockRejectedValue(
-        new UserNotFoundException('nonexistent'),
-      );
+      userService.getByIdOrThrow.mockRejectedValue(new UserNotFoundException('nonexistent'));
 
-      await expect(service.findOne('nonexistent')).rejects.toThrow(
-        UserNotFoundException,
-      );
+      await expect(service.findOne('nonexistent')).rejects.toThrow(UserNotFoundException);
     });
   });
 
@@ -103,9 +93,7 @@ describe('UsersService', () => {
       });
 
       expect(result.email).toBe('new@example.com');
-      expect(userService.assertEmailNotTaken).toHaveBeenCalledWith(
-        'new@example.com',
-      );
+      expect(userService.assertEmailNotTaken).toHaveBeenCalledWith('new@example.com');
     });
 
     it('hashes password when new password is provided', async () => {
@@ -122,13 +110,11 @@ describe('UsersService', () => {
     });
 
     it('throws when new email is already taken', async () => {
-      userService.assertEmailNotTaken.mockRejectedValue(
-        new UserAlreadyExistsException('taken@example.com'),
-      );
+      userService.assertEmailNotTaken.mockRejectedValue(new UserAlreadyExistsException('taken@example.com'));
 
-      await expect(
-        service.updateProfile('user-1', { email: 'taken@example.com' }),
-      ).rejects.toThrow(UserAlreadyExistsException);
+      await expect(service.updateProfile('user-1', { email: 'taken@example.com' })).rejects.toThrow(
+        UserAlreadyExistsException,
+      );
     });
   });
 
@@ -152,13 +138,9 @@ describe('UsersService', () => {
     });
 
     it('throws when user not found', async () => {
-      userService.deactivate.mockRejectedValue(
-        new UserNotFoundException('nonexistent'),
-      );
+      userService.deactivate.mockRejectedValue(new UserNotFoundException('nonexistent'));
 
-      await expect(service.deactivate('nonexistent')).rejects.toThrow(
-        UserNotFoundException,
-      );
+      await expect(service.deactivate('nonexistent')).rejects.toThrow(UserNotFoundException);
     });
   });
 });

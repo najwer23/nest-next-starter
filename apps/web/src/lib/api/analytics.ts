@@ -11,15 +11,11 @@ export interface AnalysisDto {
   userId: string;
 }
 
-const API_URL = process.env.API_URL ?? "http://localhost:3001/api/v1";
+const API_URL = process.env.API_URL ?? 'http://localhost:3001/api/v1';
 
-async function apiFetch<T>(
-  path: string,
-  options: RequestInit = {},
-  accessToken?: string,
-): Promise<T> {
+async function apiFetch<T>(path: string, options: RequestInit = {}, accessToken?: string): Promise<T> {
   const headers: HeadersInit = {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
     ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
     ...options.headers,
   };
@@ -30,23 +26,18 @@ async function apiFetch<T>(
   });
 
   if (!response.ok) {
-    const error = await response
-      .json()
-      .catch(() => ({ message: "Request failed" }));
+    const error = await response.json().catch(() => ({ message: 'Request failed' }));
     throw error;
   }
 
   return response.json() as Promise<T>;
 }
 
-export function analyzeApi(
-  accessToken: string,
-  text: string,
-): Promise<AnalysisDto> {
+export function analyzeApi(accessToken: string, text: string): Promise<AnalysisDto> {
   return apiFetch(
-    "/analytics/analyze",
+    '/analytics/analyze',
     {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify({ text }),
     },
     accessToken,
@@ -63,16 +54,11 @@ export interface AnalysisHistoryDto {
   };
 }
 
-
 export function getAnalysisHistoryApi(
   accessToken: string,
   userId: string,
   page = 1,
   limit = 10,
 ): Promise<AnalysisHistoryDto> {
-  return apiFetch(
-    `/analytics/users/${userId}?page=${page}&limit=${limit}`,
-    {},
-    accessToken,
-  );
+  return apiFetch(`/analytics/users/${userId}?page=${page}&limit=${limit}`, {}, accessToken);
 }

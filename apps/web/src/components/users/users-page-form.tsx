@@ -1,18 +1,15 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import type { PaginatedUsersDto } from "@/types";
-import { UsersDataTable } from "./table/users-data-table";
+import * as React from 'react';
+import type { PaginatedUsersDto } from '@/types';
+import { UsersDataTable } from './table/users-data-table';
 
 export interface UsersPageFormProps {
   initialData: PaginatedUsersDto;
   accessToken: string;
 }
 
-export function UsersPageForm({
-  initialData,
-  accessToken,
-}: UsersPageFormProps): React.JSX.Element {
+export function UsersPageForm({ initialData, accessToken }: UsersPageFormProps): React.JSX.Element {
   const [data, setData] = React.useState<PaginatedUsersDto>(initialData);
 
   if (data.items.length === 0) {

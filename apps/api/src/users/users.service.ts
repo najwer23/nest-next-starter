@@ -1,14 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
-import * as argon2 from 'argon2';
 import { User } from '@prisma/client';
+import * as argon2 from 'argon2';
 import { UserService } from '../entities/user/user.service';
-import {
-  ListUsersArgs,
-  UpdateUserArgs,
-  UpdateRoleArgs,
-  UserOutput,
-  PaginatedUsersOutput,
-} from './models';
+import { ListUsersArgs, PaginatedUsersOutput, UpdateRoleArgs, UpdateUserArgs, UserOutput } from './models';
 
 @Injectable()
 export class UsersService {

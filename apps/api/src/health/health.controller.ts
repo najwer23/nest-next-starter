@@ -1,7 +1,7 @@
 import { Controller, Get, Logger } from '@nestjs/common';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
-import { PrismaService } from '../prisma/prisma.service';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Public } from '../common/decorators';
+import { PrismaService } from '../prisma/prisma.service';
 
 interface HealthOutput {
   status: 'ok' | 'error';

@@ -1,16 +1,16 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { AuthService } from './auth.service';
-import { UserService } from '../entities/user/user.service';
+import { JwtService } from '@nestjs/jwt';
+import { Test, TestingModule } from '@nestjs/testing';
+import { Role, User } from '@prisma/client';
+import * as argon2 from 'argon2';
+import { DomainException } from '../common/exceptions';
 import {
   UserAlreadyExistsException,
   UserInactiveException,
   UserNotFoundException,
 } from '../entities/user/user.exceptions';
-import { DomainException } from '../common/exceptions';
-import { Role, User } from '@prisma/client';
-import * as argon2 from 'argon2';
+import { UserService } from '../entities/user/user.service';
+import { AuthService } from './auth.service';
 
 jest.mock('argon2');
 
@@ -80,22 +80,18 @@ describe('AuthService', () => {
         password: 'Password1!',
       });
 
-      expect(userService.assertEmailNotTaken).toHaveBeenCalledWith(
-        'test@example.com',
-      );
+      expect(userService.assertEmailNotTaken).toHaveBeenCalledWith('test@example.com');
       expect(userService.create).toHaveBeenCalled();
       expect(result).toHaveProperty('accessToken');
       expect(result).toHaveProperty('refreshToken');
     });
 
     it('throws when email is already taken', async () => {
-      userService.assertEmailNotTaken.mockRejectedValue(
-        new UserAlreadyExistsException('test@example.com'),
-      );
+      userService.assertEmailNotTaken.mockRejectedValue(new UserAlreadyExistsException('test@example.com'));
 
-      await expect(
-        service.register({ email: 'test@example.com', password: 'Password1!' }),
-      ).rejects.toThrow(UserAlreadyExistsException);
+      await expect(service.register({ email: 'test@example.com', password: 'Password1!' })).rejects.toThrow(
+        UserAlreadyExistsException,
+      );
     });
   });
 
@@ -119,25 +115,21 @@ describe('AuthService', () => {
       userService.getActiveByEmailOrThrow.mockResolvedValue(user);
       (argon2.verify as jest.Mock).mockResolvedValue(false);
 
-      await expect(
-        service.login({ email: 'test@example.com', password: 'WrongPass1!' }),
-      ).rejects.toThrow(DomainException);
+      await expect(service.login({ email: 'test@example.com', password: 'WrongPass1!' })).rejects.toThrow(
+        DomainException,
+      );
     });
 
     it('throws DomainException when user not found', async () => {
-      userService.getActiveByEmailOrThrow.mockRejectedValue(
-        new UserNotFoundException('test@example.com'),
-      );
+      userService.getActiveByEmailOrThrow.mockRejectedValue(new UserNotFoundException('test@example.com'));
 
-      await expect(
-        service.login({ email: 'missing@example.com', password: 'Password1!' }),
-      ).rejects.toThrow(DomainException);
+      await expect(service.login({ email: 'missing@example.com', password: 'Password1!' })).rejects.toThrow(
+        DomainException,
+      );
     });
 
     it('throws DomainException when user is inactive', async () => {
-      userService.getActiveByEmailOrThrow.mockRejectedValue(
-        new UserInactiveException(),
-      );
+      userService.getActiveByEmailOrThrow.mockRejectedValue(new UserInactiveException());
 
       await expect(
         service.login({
@@ -169,9 +161,7 @@ describe('AuthService', () => {
         throw new Error('invalid');
       });
 
-      await expect(service.refresh('invalid-token')).rejects.toThrow(
-        DomainException,
-      );
+      await expect(service.refresh('invalid-token')).rejects.toThrow(DomainException);
     });
 
     it('throws when user from token not found', async () => {
@@ -180,13 +170,9 @@ describe('AuthService', () => {
         email: 'test@example.com',
         role: 'ANALYST',
       });
-      userService.getByIdOrThrow.mockRejectedValue(
-        new UserNotFoundException('nonexistent'),
-      );
+      userService.getByIdOrThrow.mockRejectedValue(new UserNotFoundException('nonexistent'));
 
-      await expect(service.refresh('valid-token')).rejects.toThrow(
-        DomainException,
-      );
+      await expect(service.refresh('valid-token')).rejects.toThrow(DomainException);
     });
   });
 });

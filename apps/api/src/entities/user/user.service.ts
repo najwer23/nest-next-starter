@@ -1,11 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { User, Prisma, Role } from '@prisma/client';
+import { Prisma, Role, User } from '@prisma/client';
+import { UserAlreadyExistsException, UserInactiveException, UserNotFoundException } from './user.exceptions';
 import { UserRepository } from './user.repository';
-import {
-  UserNotFoundException,
-  UserAlreadyExistsException,
-  UserInactiveException,
-} from './user.exceptions';
 
 @Injectable()
 export class UserService {

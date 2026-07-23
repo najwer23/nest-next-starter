@@ -1,21 +1,20 @@
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { HttpStatus, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import * as argon2 from 'argon2';
+import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
-import { UserService } from '../entities/user/user.service';
-import { getJwtConfig } from '../config/jwt-config';
-import {
-  RegisterArgs,
-  LoginArgs,
-  AuthTokensOutput,
-  UserProfileOutput,
-  INVALID_CREDENTIALS,
-  REFRESH_TOKEN_INVALID,
-} from './models';
+import * as argon2 from 'argon2';
 import { DomainException } from '../common/exceptions';
-import { HttpStatus } from '@nestjs/common';
+import { getJwtConfig } from '../config/jwt-config';
+import { UserService } from '../entities/user/user.service';
 import { JwtPayload } from './jwt.strategy';
+import {
+  AuthTokensOutput,
+  INVALID_CREDENTIALS,
+  LoginArgs,
+  REFRESH_TOKEN_INVALID,
+  RegisterArgs,
+  UserProfileOutput,
+} from './models';
 
 @Injectable()
 export class AuthService {
@@ -44,26 +43,13 @@ export class AuthService {
   async login(args: LoginArgs): Promise<AuthTokensOutput> {
     this.logger.log({ message: 'Login user', meta: { email: args.email } });
 
-    const user = await this.userService
-      .getActiveByEmailOrThrow(args.email)
-      .catch(() => {
-        throw new DomainException(
-          'INVALID_CREDENTIALS',
-          INVALID_CREDENTIALS,
-          HttpStatus.UNAUTHORIZED,
-        );
-      });
+    const user = await this.userService.getActiveByEmailOrThrow(args.email).catch(() => {
+      throw new DomainException('INVALID_CREDENTIALS', INVALID_CREDENTIALS, HttpStatus.UNAUTHORIZED);
+    });
 
-    const isPasswordValid = await argon2.verify(
-      user.passwordHash,
-      args.password,
-    );
+    const isPasswordValid = await argon2.verify(user.passwordHash, args.password);
     if (!isPasswordValid) {
-      throw new DomainException(
-        'INVALID_CREDENTIALS',
-        INVALID_CREDENTIALS,
-        HttpStatus.UNAUTHORIZED,
-      );
+      throw new DomainException('INVALID_CREDENTIALS', INVALID_CREDENTIALS, HttpStatus.UNAUTHORIZED);
     }
 
     return this.generateTokens(user);
@@ -80,22 +66,12 @@ export class AuthService {
         secret: jwtConfig.refreshSecret,
       });
     } catch {
-      throw new DomainException(
-        'REFRESH_TOKEN_INVALID',
-        REFRESH_TOKEN_INVALID,
-        HttpStatus.UNAUTHORIZED,
-      );
+      throw new DomainException('REFRESH_TOKEN_INVALID', REFRESH_TOKEN_INVALID, HttpStatus.UNAUTHORIZED);
     }
 
-    const user = await this.userService
-      .getByIdOrThrow(payload.sub)
-      .catch(() => {
-        throw new DomainException(
-          'REFRESH_TOKEN_INVALID',
-          REFRESH_TOKEN_INVALID,
-          HttpStatus.UNAUTHORIZED,
-        );
-      });
+    const user = await this.userService.getByIdOrThrow(payload.sub).catch(() => {
+      throw new DomainException('REFRESH_TOKEN_INVALID', REFRESH_TOKEN_INVALID, HttpStatus.UNAUTHORIZED);
+    });
 
     if (!user.isActive) {
       throw new UnauthorizedException('Account is inactive');

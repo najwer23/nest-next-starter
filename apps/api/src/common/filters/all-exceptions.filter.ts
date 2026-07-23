@@ -1,13 +1,6 @@
-import {
-  ExceptionFilter,
-  Catch,
-  ArgumentsHost,
-  HttpException,
-  HttpStatus,
-  Logger,
-} from '@nestjs/common';
-import { Request, Response } from 'express';
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus, Logger } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { Request, Response } from 'express';
 import { DomainException } from '../exceptions';
 
 interface ErrorResponse {
@@ -35,8 +28,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
         statusCode: errorResponse.statusCode,
         errorCode: errorResponse.errorCode,
         path: errorResponse.path,
-        exception:
-          exception instanceof Error ? exception.stack : String(exception),
+        exception: exception instanceof Error ? exception.stack : String(exception),
       },
     });
 
@@ -60,16 +52,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
       const status = exception.getStatus();
       const exceptionResponse = exception.getResponse();
       const message =
-        typeof exceptionResponse === 'object' &&
-        exceptionResponse !== null &&
-        'message' in exceptionResponse
-          ? Array.isArray(
-              (exceptionResponse as Record<string, unknown>).message,
-            )
-            ? (
-                (exceptionResponse as Record<string, unknown>)
-                  .message as string[]
-              ).join(', ')
+        typeof exceptionResponse === 'object' && exceptionResponse !== null && 'message' in exceptionResponse
+          ? Array.isArray((exceptionResponse as Record<string, unknown>).message)
+            ? ((exceptionResponse as Record<string, unknown>).message as string[]).join(', ')
             : String((exceptionResponse as Record<string, unknown>).message)
           : exception.message;
 

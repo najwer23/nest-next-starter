@@ -24,23 +24,12 @@ export class AnalyticsService {
   }
 
   private unavailableError(message: string): DomainException {
-    return new DomainException(
-      'ANALYTICS_PROVIDER_UNAVAILABLE',
-      message,
-      503,
-    );
+    return new DomainException('ANALYTICS_PROVIDER_UNAVAILABLE', message, 503);
   }
 
   private validateExternalResponse(data: unknown): ExternalAnalysisResponse {
-    if (
-      typeof data !== 'object' ||
-      data === null ||
-      !('sentiment' in data) ||
-      !('keywords' in data)
-    ) {
-      throw this.unavailableError(
-        'Invalid analytics provider response',
-      );
+    if (typeof data !== 'object' || data === null || !('sentiment' in data) || !('keywords' in data)) {
+      throw this.unavailableError('Invalid analytics provider response');
     }
 
     const { sentiment, keywords } = data;
@@ -48,13 +37,9 @@ export class AnalyticsService {
     if (
       typeof sentiment !== 'string' ||
       !Array.isArray(keywords) ||
-      !keywords.every(
-        (keyword): keyword is string => typeof keyword === 'string',
-      )
+      !keywords.every((keyword): keyword is string => typeof keyword === 'string')
     ) {
-      throw this.unavailableError(
-        'Invalid analytics provider response',
-      );
+      throw this.unavailableError('Invalid analytics provider response');
     }
 
     return {

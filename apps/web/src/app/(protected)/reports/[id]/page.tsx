@@ -1,12 +1,9 @@
-import {
-  cookies,
-} from "next/headers";
+import type { Metadata } from 'next';
+import { cookies } from 'next/headers';
+import { notFound } from 'next/navigation';
+import ReportDetails from '@/components/reports/report-details';
 
-import ReportDetails from "@/components/reports/report-details";
-import { notFound } from "next/navigation";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = { title: "Report — UserHub" };
+export const metadata: Metadata = { title: 'Report — UserHub' };
 
 export default async function ReportPage({
   params,
@@ -19,7 +16,7 @@ export default async function ReportPage({
 
   const cookieStore = await cookies();
 
-  const accessToken = cookieStore.get("accessToken")?.value;
+  const accessToken = cookieStore.get('accessToken')?.value;
 
   if (!accessToken) {
     notFound();
@@ -27,14 +24,9 @@ export default async function ReportPage({
 
   return (
     <main>
-      <h1 className="text-xl font-bold text-black">
-        Report details
-      </h1>
+      <h1 className="text-xl font-bold text-black">Report details</h1>
 
-      <ReportDetails
-        accessToken={accessToken}
-        id={id}
-      />
+      <ReportDetails accessToken={accessToken} id={id} />
     </main>
   );
 }

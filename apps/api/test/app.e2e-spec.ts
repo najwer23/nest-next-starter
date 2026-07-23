@@ -1,5 +1,5 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
 import request from 'supertest';
 import { App } from 'supertest/types';
 import { AppModule } from './../src/app.module';
@@ -31,9 +31,7 @@ describe('AppController (e2e)', () => {
 
   describe('GET /api/v1/health', () => {
     it('returns 200 with ok status', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/v1/health')
-        .expect(200);
+      const res = await request(app.getHttpServer()).get('/api/v1/health').expect(200);
 
       expect(res.body).toMatchObject({
         status: 'ok',
@@ -45,10 +43,7 @@ describe('AppController (e2e)', () => {
 
   describe('POST /api/v1/auth/login', () => {
     it('returns 400 when body is empty', () => {
-      return request(app.getHttpServer())
-        .post('/api/v1/auth/login')
-        .send({})
-        .expect(400);
+      return request(app.getHttpServer()).post('/api/v1/auth/login').send({}).expect(400);
     });
 
     it('returns 401 for invalid credentials', () => {

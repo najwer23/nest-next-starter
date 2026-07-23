@@ -83,12 +83,7 @@ export class ReportsService {
   }
 
   private parseReportData(data: Prisma.JsonValue): ReportData {
-    if (
-      typeof data !== 'object' ||
-      data === null ||
-      !('analysisCount' in data) ||
-      !('sentimentDistribution' in data)
-    ) {
+    if (typeof data !== 'object' || data === null || !('analysisCount' in data) || !('sentimentDistribution' in data)) {
       throw new ForbiddenException('Invalid report data');
     }
 
@@ -155,8 +150,7 @@ export class ReportsService {
       activity.set(analysis.user.id, (activity.get(analysis.user.id) ?? 0) + 1);
     }
 
-    const coversOnlyInactiveUsers =
-      users.size > 0 && [...users.values()].every(active => !active);
+    const coversOnlyInactiveUsers = users.size > 0 && [...users.values()].every((active) => !active);
 
     const mostActiveUsers = [...activity.entries()]
       .sort((a, b) => b[1] - a[1])
@@ -192,7 +186,7 @@ export class ReportsService {
       take: 10,
     });
 
-    return reports.map(report => this.shapeForRole(user, report));
+    return reports.map((report) => this.shapeForRole(user, report));
   }
 
   async getById(id: string, user: RequestUser) {

@@ -1,26 +1,15 @@
-import {
-  ValidationArguments,
-  ValidatorConstraint,
-  ValidatorConstraintInterface,
-} from 'class-validator';
+import { ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
 
 @ValidatorConstraint({
   name: 'IsReportDateRange',
   async: false,
 })
-export class IsReportDateRange
-  implements ValidatorConstraintInterface {
-
-  validate(
-    dateTo: string,
-    args: ValidationArguments,
-  ) {
-
-    const dto =
-      args.object as {
-        dateFrom: string;
-        dateTo: string;
-      };
+export class IsReportDateRange implements ValidatorConstraintInterface {
+  validate(dateTo: string, args: ValidationArguments) {
+    const dto = args.object as {
+      dateFrom: string;
+      dateTo: string;
+    };
 
     const from = new Date(dto.dateFrom);
     from.setHours(0, 0, 0, 0);
@@ -39,12 +28,9 @@ export class IsReportDateRange
       return false;
     }
 
-    const diff =
-      to.getTime() -
-      from.getTime();
+    const diff = to.getTime() - from.getTime();
 
-    const days =
-      diff / (1000 * 60 * 60 * 24);
+    const days = diff / (1000 * 60 * 60 * 24);
 
     if (days > 365) {
       return false;
@@ -53,15 +39,11 @@ export class IsReportDateRange
     return true;
   }
 
-  defaultMessage(
-    args: ValidationArguments,
-  ) {
-
-    const dto =
-      args.object as {
-        dateFrom: string;
-        dateTo: string;
-      };
+  defaultMessage(args: ValidationArguments) {
+    const dto = args.object as {
+      dateFrom: string;
+      dateTo: string;
+    };
 
     const from = new Date(dto.dateFrom);
     from.setHours(0, 0, 0, 0);

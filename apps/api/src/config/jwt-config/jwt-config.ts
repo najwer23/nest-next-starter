@@ -1,5 +1,4 @@
-import { registerAs } from '@nestjs/config';
-import { ConfigService } from '@nestjs/config';
+import { ConfigService, registerAs } from '@nestjs/config';
 import { JwtConfigModel } from './jwt-config-model';
 
 const JwtConfigName = 'jwtConfig';
@@ -9,8 +8,7 @@ export const JwtConfig = registerAs(JwtConfigName, (): JwtConfigModel => {
   if (!secret) throw new Error('JWT_SECRET env variable is required');
 
   const refreshSecret = process.env.JWT_REFRESH_SECRET;
-  if (!refreshSecret)
-    throw new Error('JWT_REFRESH_SECRET env variable is required');
+  if (!refreshSecret) throw new Error('JWT_REFRESH_SECRET env variable is required');
 
   return {
     secret,

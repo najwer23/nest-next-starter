@@ -1,10 +1,6 @@
-import { Navigation } from "@/components/core/navigation";
+import { Navigation } from '@/components/core/navigation';
 
-export default function ProtectedLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}): React.JSX.Element {
+export default function ProtectedLayout({ children }: { children: React.ReactNode }): React.JSX.Element {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />

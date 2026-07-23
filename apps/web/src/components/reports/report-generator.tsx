@@ -1,57 +1,42 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { createReportApi } from "@/lib/api/reports";
+import { useState } from 'react';
+import { createReportApi } from '@/lib/api/reports';
 
 type Props = {
   accessToken: string;
 };
 
-type ReportStatus =
-  | "idle"
-  | "in_progress"
-  | "failed";
+type ReportStatus = 'idle' | 'in_progress' | 'failed';
 
 function delay(ms: number) {
-  return new Promise((resolve) =>
-    setTimeout(resolve, ms),
-  );
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export default function ReportGenerator({
-  accessToken,
-}: Props) {
-  const [dateFrom, setDateFrom] = useState("");
-  const [dateTo, setDateTo] = useState("");
-  const [status, setStatus] =
-    useState<ReportStatus>("idle");
-  const [error, setError] = useState("");
+export default function ReportGenerator({ accessToken }: Props) {
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
+  const [status, setStatus] = useState<ReportStatus>('idle');
+  const [error, setError] = useState('');
 
   async function generateReport() {
     if (!dateFrom || !dateTo) return;
 
-    setError("");
-    setStatus("in_progress");
+    setError('');
+    setStatus('in_progress');
 
     try {
       await delay(300);
 
-      await createReportApi(
-        accessToken,
-        {
-          dateFrom,
-          dateTo,
-        },
-      );
+      await createReportApi(accessToken, {
+        dateFrom,
+        dateTo,
+      });
 
-      setStatus("idle");
+      setStatus('idle');
     } catch (err: unknown) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Report generation failed",
-      );
-      setStatus("failed");
+      setError(err instanceof Error ? err.message : 'Report generation failed');
+      setStatus('failed');
     }
   }
 
@@ -59,10 +44,7 @@ export default function ReportGenerator({
     <div className="space-y-4">
       <div className="flex gap-4">
         <div>
-          <label
-            htmlFor="dateFrom"
-            className="block text-sm font-medium text-black"
-          >
+          <label htmlFor="dateFrom" className="block text-sm font-medium text-black">
             Date from
           </label>
           <input
@@ -70,17 +52,12 @@ export default function ReportGenerator({
             className="mt-1 rounded-md border px-3 py-2 text-sm text-black"
             type="date"
             value={dateFrom}
-            onChange={(e) =>
-              setDateFrom(e.target.value)
-            }
+            onChange={(e) => setDateFrom(e.target.value)}
           />
         </div>
 
         <div>
-          <label
-            htmlFor="dateTo"
-            className="block text-sm font-medium text-black"
-          >
+          <label htmlFor="dateTo" className="block text-sm font-medium text-black">
             Date to
           </label>
           <input
@@ -88,9 +65,7 @@ export default function ReportGenerator({
             className="mt-1 rounded-md border px-3 py-2 text-sm text-black"
             type="date"
             value={dateTo}
-            onChange={(e) =>
-              setDateTo(e.target.value)
-            }
+            onChange={(e) => setDateTo(e.target.value)}
           />
         </div>
       </div>
@@ -98,28 +73,14 @@ export default function ReportGenerator({
       <button
         className="rounded bg-blue-600 px-4 py-2 text-white disabled:opacity-50"
         onClick={generateReport}
-        disabled={
-          status === "in_progress"
-        }
+        disabled={status === 'in_progress'}
       >
-        {status === "in_progress"
-          ? "Generating..."
-          : status === "failed"
-          ? "Retry"
-          : "Generate report"}
+        {status === 'in_progress' ? 'Generating...' : status === 'failed' ? 'Retry' : 'Generate report'}
       </button>
 
-      {status === "in_progress" && (
-        <p className="text-black">
-          Report generation in progress...
-        </p>
-      )}
+      {status === 'in_progress' && <p className="text-black">Report generation in progress...</p>}
 
-      {status === "failed" && (
-        <p className="text-red-600">
-          {error}
-        </p>
-      )}
+      {status === 'failed' && <p className="text-red-600">{error}</p>}
     </div>
   );
 }

@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import type { UserDto, PaginatedUsersDto } from "@/types";
-import { deactivateUserApi, getUsersApi } from "@/lib/api/client";
+import * as React from 'react';
+import { deactivateUserApi, getUsersApi } from '@/lib/api/client';
+import type { PaginatedUsersDto, UserDto } from '@/types';
 
 export interface UsersDataTableProps {
   rows: UserDto[];
@@ -44,21 +44,11 @@ export function UsersDataTable({
       <table className="w-full text-sm">
         <thead className="border-b border-gray-200 bg-gray-50">
           <tr>
-            <th className="px-4 py-3 text-left font-medium text-gray-500">
-              Email
-            </th>
-            <th className="px-4 py-3 text-left font-medium text-gray-500">
-              Role
-            </th>
-            <th className="px-4 py-3 text-left font-medium text-gray-500">
-              Status
-            </th>
-            <th className="px-4 py-3 text-left font-medium text-gray-500">
-              Created
-            </th>
-            <th className="px-4 py-3 text-right font-medium text-gray-500">
-              Actions
-            </th>
+            <th className="px-4 py-3 text-left font-medium text-gray-500">Email</th>
+            <th className="px-4 py-3 text-left font-medium text-gray-500">Role</th>
+            <th className="px-4 py-3 text-left font-medium text-gray-500">Status</th>
+            <th className="px-4 py-3 text-left font-medium text-gray-500">Created</th>
+            <th className="px-4 py-3 text-right font-medium text-gray-500">Actions</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-100">
@@ -73,17 +63,13 @@ export function UsersDataTable({
               <td className="px-4 py-3">
                 <span
                   className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                    user.isActive
-                      ? "bg-green-100 text-green-800"
-                      : "bg-red-100 text-red-800"
+                    user.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                   }`}
                 >
-                  {user.isActive ? "Active" : "Inactive"}
+                  {user.isActive ? 'Active' : 'Inactive'}
                 </span>
               </td>
-              <td className="px-4 py-3 text-gray-500">
-                {new Date(user.createdAt).toLocaleDateString("en-CA")}
-              </td>
+              <td className="px-4 py-3 text-gray-500">{new Date(user.createdAt).toLocaleDateString('en-CA')}</td>
               <td className="px-4 py-3 text-right">
                 {user.isActive && (
                   <button
@@ -91,7 +77,7 @@ export function UsersDataTable({
                     disabled={loadingId === user.id}
                     className="rounded bg-red-100 px-2.5 py-1 text-xs font-medium text-red-700 hover:bg-red-200 disabled:opacity-50"
                   >
-                    {loadingId === user.id ? "Deactivating..." : "Deactivate"}
+                    {loadingId === user.id ? 'Deactivating...' : 'Deactivate'}
                   </button>
                 )}
               </td>
@@ -103,8 +89,7 @@ export function UsersDataTable({
       {total > limit && (
         <div className="flex items-center justify-between border-t border-gray-200 px-4 py-3">
           <p className="text-sm text-gray-500">
-            Showing {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of{" "}
-            {total}
+            Showing {(page - 1) * limit + 1}–{Math.min(page * limit, total)} of {total}
           </p>
           <div className="flex gap-2">
             <button

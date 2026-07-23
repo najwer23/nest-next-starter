@@ -1,14 +1,14 @@
-import type { Metadata } from "next";
-import { cookies } from "next/headers";
-import { notFound, redirect } from "next/navigation";
-import { getUsersApi } from "@/lib/api/users";
-import { UsersPageForm } from "@/components/users/users-page-form";
+import type { Metadata } from 'next';
+import { cookies } from 'next/headers';
+import { notFound, redirect } from 'next/navigation';
+import { UsersPageForm } from '@/components/users/users-page-form';
+import { getUsersApi } from '@/lib/api/users';
 
-export const metadata: Metadata = { title: "Users — UserHub" };
+export const metadata: Metadata = { title: 'Users — UserHub' };
 
 export default async function UsersPage(): Promise<React.JSX.Element> {
   const cookieStore = await cookies();
-  const accessToken = cookieStore.get("accessToken")?.value;
+  const accessToken = cookieStore.get('accessToken')?.value;
 
   if (!accessToken) notFound();
 
@@ -17,7 +17,7 @@ export default async function UsersPage(): Promise<React.JSX.Element> {
     data = await getUsersApi(accessToken, 1, 20);
   } catch (err) {
     const status = (err as { statusCode?: number })?.statusCode;
-    if (status === 401) redirect("/api/auth/logout");
+    if (status === 401) redirect('/api/auth/logout');
     throw err;
   }
 

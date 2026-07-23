@@ -1,22 +1,19 @@
-import { type NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from 'next/server';
 
-const API_URL = process.env.API_URL ?? "http://localhost:3001/api/v1";
+const API_URL = process.env.API_URL ?? 'http://localhost:3001/api/v1';
 
 async function handler(
   request: NextRequest,
   { params }: { params: Promise<{ path: string[] }> },
 ): Promise<NextResponse> {
   const { path } = await params;
-  const upstream = `${API_URL}/auth/${path.join("/")}`;
+  const upstream = `${API_URL}/auth/${path.join('/')}`;
 
-  const body =
-    request.method !== "GET" && request.method !== "HEAD"
-      ? await request.text()
-      : undefined;
+  const body = request.method !== 'GET' && request.method !== 'HEAD' ? await request.text() : undefined;
 
   const upstreamRes = await fetch(upstream, {
     method: request.method,
-    headers: { "Content-Type": "application/json" },
+    headers: { 'Content-Type': 'application/json' },
     body,
   });
 

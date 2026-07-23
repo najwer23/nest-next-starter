@@ -1,12 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserService } from './user.service';
-import { UserRepository } from './user.repository';
-import {
-  UserNotFoundException,
-  UserAlreadyExistsException,
-  UserInactiveException,
-} from './user.exceptions';
 import { Role, User } from '@prisma/client';
+import { UserAlreadyExistsException, UserInactiveException, UserNotFoundException } from './user.exceptions';
+import { UserRepository } from './user.repository';
+import { UserService } from './user.service';
 
 const mockUser = (overrides: Partial<User> = {}): User => ({
   id: 'user-1',
@@ -56,9 +52,7 @@ describe('UserService', () => {
     it('throws UserNotFoundException when user not found', async () => {
       repository.findByEmail.mockResolvedValue(null);
 
-      await expect(
-        service.getByEmailOrThrow('missing@example.com'),
-      ).rejects.toThrow(UserNotFoundException);
+      await expect(service.getByEmailOrThrow('missing@example.com')).rejects.toThrow(UserNotFoundException);
     });
   });
 
@@ -75,9 +69,7 @@ describe('UserService', () => {
     it('throws UserNotFoundException when user not found', async () => {
       repository.findById.mockResolvedValue(null);
 
-      await expect(service.getByIdOrThrow('nonexistent')).rejects.toThrow(
-        UserNotFoundException,
-      );
+      await expect(service.getByIdOrThrow('nonexistent')).rejects.toThrow(UserNotFoundException);
     });
   });
 
@@ -95,17 +87,13 @@ describe('UserService', () => {
       const user = mockUser({ isActive: false });
       repository.findByEmail.mockResolvedValue(user);
 
-      await expect(
-        service.getActiveByEmailOrThrow('test@example.com'),
-      ).rejects.toThrow(UserInactiveException);
+      await expect(service.getActiveByEmailOrThrow('test@example.com')).rejects.toThrow(UserInactiveException);
     });
 
     it('throws UserNotFoundException when user not found', async () => {
       repository.findByEmail.mockResolvedValue(null);
 
-      await expect(
-        service.getActiveByEmailOrThrow('missing@example.com'),
-      ).rejects.toThrow(UserNotFoundException);
+      await expect(service.getActiveByEmailOrThrow('missing@example.com')).rejects.toThrow(UserNotFoundException);
     });
   });
 
@@ -113,17 +101,13 @@ describe('UserService', () => {
     it('resolves when email is free', async () => {
       repository.findByEmail.mockResolvedValue(null);
 
-      await expect(
-        service.assertEmailNotTaken('new@example.com'),
-      ).resolves.not.toThrow();
+      await expect(service.assertEmailNotTaken('new@example.com')).resolves.not.toThrow();
     });
 
     it('throws UserAlreadyExistsException when email is taken', async () => {
       repository.findByEmail.mockResolvedValue(mockUser());
 
-      await expect(
-        service.assertEmailNotTaken('test@example.com'),
-      ).rejects.toThrow(UserAlreadyExistsException);
+      await expect(service.assertEmailNotTaken('test@example.com')).rejects.toThrow(UserAlreadyExistsException);
     });
   });
 
@@ -143,9 +127,7 @@ describe('UserService', () => {
     it('throws UserNotFoundException when user not found', async () => {
       repository.findById.mockResolvedValue(null);
 
-      await expect(service.deactivate('nonexistent')).rejects.toThrow(
-        UserNotFoundException,
-      );
+      await expect(service.deactivate('nonexistent')).rejects.toThrow(UserNotFoundException);
     });
   });
 

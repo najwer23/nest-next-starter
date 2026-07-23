@@ -1,22 +1,24 @@
 {
-    "name": "userhub",
-    "private": true,
-    "packageManager": "pnpm@9.15.4",
-    "scripts": {
-        "dev:api": "pnpm --filter api start:dev",
-        "dev:web": "pnpm --filter web dev",
-        "dev:mock": "pnpm --filter mock-analytics start:dev",
-        "build": "pnpm -r build",
-        "test": "pnpm -r test",
-        "lint": "pnpm -r lint"
-    },
-    "devDependencies": {
-        "ts-node": "^10.9.2",
-        "typescript": "^5.3.3"
-    },
-    "pnpm": {
-        "overrides": {
-            "postcss": "^8.5.10"
-        }
+  "name": "userhub",
+  "private": true,
+  "packageManager": "pnpm@9.15.4",
+  "scripts": {
+    "dev:api": "pnpm --filter api start:dev",
+    "dev:web": "pnpm --filter web dev",
+    "dev:mock": "pnpm --filter mock-analytics start:dev",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "format": "pnpm exec biome check --write"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
+    "@biomejs/biome": "2.5.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "postcss": "^8.5.10"
     }
+  }
 }

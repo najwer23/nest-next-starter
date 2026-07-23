@@ -1,15 +1,9 @@
-import { Controller, Post, Body, Logger } from '@nestjs/common';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
-import { AuthService } from './auth.service';
-import { Public, CurrentUser } from '../common/decorators';
-import {
-  RegisterArgs,
-  LoginArgs,
-  RefreshArgs,
-  AuthTokensOutput,
-  UserProfileOutput,
-} from './models';
+import { Body, Controller, Logger, Post } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { User } from '@prisma/client';
+import { CurrentUser, Public } from '../common/decorators';
+import { AuthService } from './auth.service';
+import { AuthTokensOutput, LoginArgs, RefreshArgs, RegisterArgs, UserProfileOutput } from './models';
 
 @ApiTags('auth')
 @Controller('auth')

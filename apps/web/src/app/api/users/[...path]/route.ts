@@ -1,6 +1,6 @@
-import { type NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from 'next/server';
 
-const API_URL = process.env.API_URL ?? "http://localhost:3001/api/v1";
+const API_URL = process.env.API_URL ?? 'http://localhost:3001/api/v1';
 
 async function handler(
   request: NextRequest,
@@ -9,18 +9,15 @@ async function handler(
   const { path } = await params;
   const { searchParams } = new URL(request.url);
   const query = searchParams.toString();
-  const upstream = `${API_URL}/users/${path.join("/")}${query ? `?${query}` : ""}`;
+  const upstream = `${API_URL}/users/${path.join('/')}${query ? `?${query}` : ''}`;
 
-  const authorization = request.headers.get("Authorization") ?? "";
-  const body =
-    request.method !== "GET" && request.method !== "HEAD"
-      ? await request.text()
-      : undefined;
+  const authorization = request.headers.get('Authorization') ?? '';
+  const body = request.method !== 'GET' && request.method !== 'HEAD' ? await request.text() : undefined;
 
   const upstreamRes = await fetch(upstream, {
     method: request.method,
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       ...(authorization ? { Authorization: authorization } : {}),
     },
     body,

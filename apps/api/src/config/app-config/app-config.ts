@@ -1,5 +1,4 @@
-import { registerAs } from '@nestjs/config';
-import { ConfigService } from '@nestjs/config';
+import { ConfigService, registerAs } from '@nestjs/config';
 import { AppConfigModel } from './app-config-model';
 
 const AppConfigName = 'appConfig';

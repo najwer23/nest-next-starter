@@ -5,11 +5,7 @@ export function createWinstonLogger(nodeEnv: string, logLevel: string) {
   const isProduction = nodeEnv === 'production';
 
   const format = isProduction
-    ? winston.format.combine(
-        winston.format.timestamp(),
-        winston.format.ms(),
-        winston.format.json(),
-      )
+    ? winston.format.combine(winston.format.timestamp(), winston.format.ms(), winston.format.json())
     : winston.format.combine(
         winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
         winston.format.ms(),

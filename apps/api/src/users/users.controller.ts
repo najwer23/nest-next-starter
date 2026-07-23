@@ -1,25 +1,10 @@
-import {
-  Controller,
-  Get,
-  Patch,
-  Delete,
-  Body,
-  Param,
-  Query,
-  Logger,
-} from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
-import { Role } from '@prisma/client';
+import { Body, Controller, Delete, Get, Logger, Param, Patch, Query } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { User } from '@prisma/client';
+import { Role } from '@prisma/client';
+import { CurrentUser, Roles } from '../common/decorators';
+import { ListUsersArgs, PaginatedUsersOutput, UpdateRoleArgs, UpdateUserArgs, UserOutput } from './models';
 import { UsersService } from './users.service';
-import { Roles, CurrentUser } from '../common/decorators';
-import {
-  ListUsersArgs,
-  UpdateUserArgs,
-  UpdateRoleArgs,
-  UserOutput,
-  PaginatedUsersOutput,
-} from './models';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -46,10 +31,7 @@ export class UsersController {
 
   @Patch('me')
   @ApiOperation({ summary: 'Update own profile (email, password)' })
-  async updateMe(
-    @CurrentUser() user: User,
-    @Body() body: UpdateUserArgs,
-  ): Promise<UserOutput> {
+  async updateMe(@CurrentUser() user: User, @Body() body: UpdateUserArgs): Promise<UserOutput> {
     this.logger.log({ message: 'PATCH /users/me', meta: { userId: user.id } });
     return this.usersService.updateProfile(user.id, body);
   }
@@ -65,10 +47,7 @@ export class UsersController {
   @Patch(':id/role')
   @Roles(Role.ADMIN)
   @ApiOperation({ summary: 'Update user role (ADMIN only)' })
-  async updateRole(
-    @Param('id') id: string,
-    @Body() body: UpdateRoleArgs,
-  ): Promise<UserOutput> {
+  async updateRole(@Param('id') id: string, @Body() body: UpdateRoleArgs): Promise<UserOutput> {
     this.logger.log({
       message: 'PATCH /users/:id/role',
       meta: { id, role: body.role },

@@ -1,14 +1,14 @@
-import type { Metadata } from "next";
-import { cookies } from "next/headers";
-import { notFound, redirect } from "next/navigation";
-import { getMeApi } from "@/lib/api/users";
-import { ProfileCard } from "@/components/core/profile-card";
+import type { Metadata } from 'next';
+import { cookies } from 'next/headers';
+import { notFound, redirect } from 'next/navigation';
+import { ProfileCard } from '@/components/core/profile-card';
+import { getMeApi } from '@/lib/api/users';
 
-export const metadata: Metadata = { title: "Profile — UserHub" };
+export const metadata: Metadata = { title: 'Profile — UserHub' };
 
 export default async function ProfilePage(): Promise<React.JSX.Element> {
   const cookieStore = await cookies();
-  const accessToken = cookieStore.get("accessToken")?.value;
+  const accessToken = cookieStore.get('accessToken')?.value;
 
   if (!accessToken) notFound();
 
@@ -17,7 +17,7 @@ export default async function ProfilePage(): Promise<React.JSX.Element> {
     user = await getMeApi(accessToken);
   } catch (err) {
     const status = (err as { statusCode?: number })?.statusCode;
-    if (status === 401) redirect("/api/auth/logout");
+    if (status === 401) redirect('/api/auth/logout');
     throw err;
   }
 
