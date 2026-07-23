@@ -1,6 +1,4 @@
-# UserHub
-
-User management & analytics platform — pnpm monorepo: NestJS + Prisma (`apps/api`), Next.js App Router + Tailwind (`apps/web`), mock external text-analysis API (`apps/mock-analytics`).
+# Monorepo
 
 ## Quick start (fresh clone)
 
@@ -14,11 +12,11 @@ docker compose up -d db
 # 3. Copy env files, run migrations and seed
 cp apps/api/.env.example apps/api/.env
 cp apps/web/.env.example apps/web/.env
-cp apps/mock-analytics/.env.example apps/mock-analytics/.env
+cp apps/api-express/.env.example apps/api-express/.env
 cd apps/api && npx prisma migrate dev && npx prisma db seed && cd ../..
 
 # 4. Start all services
-pnpm --filter api start:dev & pnpm --filter web dev & pnpm --filter mock-analytics start:dev
+pnpm --filter api start:dev & pnpm --filter web dev & pnpm --filter api-express start:dev
 
 # 5. Kill old node instances
 pkill -f node
@@ -33,15 +31,6 @@ Services:
 - Swagger: http://localhost:3001/api/docs
 - Web: http://localhost:3000
 - Mock Analytics: http://localhost:3002
-
-## Test accounts (after seed)
-
-| Email                | Password     | Role               |
-| -------------------- | ------------ | ------------------ |
-| admin@example.com    | Admin123!    | ADMIN              |
-| manager@example.com  | Manager123!  | MANAGER            |
-| analyst@example.com  | Analyst123!  | ANALYST            |
-| inactive@example.com | Inactive123! | ANALYST (inactive) |
 
 ## Run tests
 

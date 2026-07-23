@@ -39,10 +39,10 @@ services:
       LOG_LEVEL: ${LOG_LEVEL:-info}
       CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:3000}
 
-  mock-analytics:
+  api-express:
     build:
       context: .
-      dockerfile: apps/mock-analytics/Dockerfile
+      dockerfile: apps/api-express/Dockerfile
     container_name: userhub_mock_analytics
     restart: unless-stopped
     ports:

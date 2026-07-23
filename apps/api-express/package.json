@@ -1,5 +1,5 @@
 {
-  "name": "mock-analytics",
+  "name": "api-express",
   "version": "1.0.0",
   "private": true,
   "scripts": {
