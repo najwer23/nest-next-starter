@@ -22,6 +22,9 @@ pnpm --filter api start:dev & pnpm --filter web dev & pnpm --filter mock-analyti
 
 # 5. Kill old node instances
 pkill -f node
+
+# 6 
+find . \( -name node_modules -o -name dist -o -name .next \) -type d -prune -exec rm -rf {} +
 ```
 
 Services:
