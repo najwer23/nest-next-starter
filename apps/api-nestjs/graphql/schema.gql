@@ -1,0 +1,22 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type DatabaseGQL {
+  id: ID!
+  name: String!
+  reviewedAt: String
+  reviewedBy: String
+}
+
+input MarkReviewedInput {
+  rowId: String!
+}
+
+type Mutation {
+  markRowReviewed(input: MarkReviewedInput!): DatabaseGQL!
+}
+
+type Query {
+  databaseGQL: [DatabaseGQL!]!
+}
