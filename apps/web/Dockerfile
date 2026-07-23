@@ -12,7 +12,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
 COPY apps/web ./apps/web
-ARG NEXT_PUBLIC_API_URL=http://localhost:3001/api/v1
+ARG NEXT_PUBLIC_API_URL=http://localhost:3001
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 RUN pnpm --filter web build
 

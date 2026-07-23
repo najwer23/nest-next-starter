@@ -1,39 +1,13 @@
-version: "3.9"
-
 services:
-  db:
-    image: postgres:16-alpine
-    container_name: monorepo
-    restart: unless-stopped
-    read_only: true
-    security_opt:
-      - no-new-privileges:true
-    tmpfs:
-      - /var/run/postgresql
-      - /tmp
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:-userhub}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-userhub_secret}
-      POSTGRES_DB: ${POSTGRES_DB:-userhub}
-    ports:
-      - "${POSTGRES_PORT:-5432}:5432"
-    volumes:
-      - postgres_monorepo:/var/lib/postgresql/data
-
-  api:
+  api-nestjs:
     build:
       context: .
-      dockerfile: apps/api/Dockerfile
-    container_name: userhub_api
+      dockerfile: apps/api-nestjs/Dockerfile
+    container_name: monorepo_api-nestjs
     restart: unless-stopped
     ports:
       - "3001:3001"
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER:-userhub}:${POSTGRES_PASSWORD:-userhub_secret}@db:5432/${POSTGRES_DB:-userhub}
-      JWT_SECRET: ${JWT_SECRET:-change_me_in_production_at_least_32_chars}
-      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-change_me_refresh_at_least_32_chars}
-      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-15m}
-      JWT_REFRESH_EXPIRES_IN: ${JWT_REFRESH_EXPIRES_IN:-7d}
       NODE_ENV: ${NODE_ENV:-production}
       PORT: 3001
       LOG_LEVEL: ${LOG_LEVEL:-info}
@@ -60,9 +34,5 @@ services:
     ports:
       - "3000:3000"
     environment:
-      API_URL: http://userhub_api:3001/api/v1
+      PORT: 3000
       NODE_ENV: ${NODE_ENV:-production}
-
-volumes:
-  postgres_monorepo:
-    driver: local

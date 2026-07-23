@@ -6,17 +6,16 @@
 # 1. Install dependencies
 pnpm install
 
-# 2. Start the database
-docker compose up -d db
+# 2. Start docker
+docker compose up -d
 
 # 3. Copy env files, run migrations and seed
-cp apps/api/.env.example apps/api/.env
+cp apps/api-nestjs/.env.example apps/api-nestjs/.env
 cp apps/web/.env.example apps/web/.env
 cp apps/api-express/.env.example apps/api-express/.env
-cd apps/api && npx prisma migrate dev && npx prisma db seed && cd ../..
 
 # 4. Start all services
-pnpm --filter api start:dev & pnpm --filter web dev & pnpm --filter api-express start:dev
+pnpm --filter api-nestjs start:dev & pnpm --filter web dev & pnpm --filter api-express start:dev
 
 # 5. Kill old node instances
 pkill -f node
@@ -27,10 +26,10 @@ find . \( -name node_modules -o -name dist -o -name .next \) -type d -prune -exe
 
 Services:
 
-- API: http://localhost:3001/api/v1
-- Swagger: http://localhost:3001/api/docs
+- API NESTJS: http://localhost:3001/api-nestjs
+- API NESTJS Swagger: http://localhost:3001/api/docs
 - Web: http://localhost:3000
-- Mock Analytics: http://localhost:3002
+- API EXPRESS: http://localhost:3002
 
 ## Run tests
 
