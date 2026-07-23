@@ -3,7 +3,7 @@ version: "3.9"
 services:
   db:
     image: postgres:16-alpine
-    container_name: userhub_db
+    container_name: monorepo
     restart: unless-stopped
     read_only: true
     security_opt:
@@ -18,7 +18,7 @@ services:
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     volumes:
-      - postgres_userhub:/var/lib/postgresql/data
+      - postgres_monorepo:/var/lib/postgresql/data
 
   api:
     build:
@@ -43,7 +43,7 @@ services:
     build:
       context: .
       dockerfile: apps/api-express/Dockerfile
-    container_name: userhub_mock_analytics
+    container_name: monorepo_api_express
     restart: unless-stopped
     ports:
       - "3002:3002"
@@ -55,7 +55,7 @@ services:
     build:
       context: .
       dockerfile: apps/web/Dockerfile
-    container_name: userhub_web
+    container_name: monorepo_web
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -64,5 +64,5 @@ services:
       NODE_ENV: ${NODE_ENV:-production}
 
 volumes:
-  postgres_userhub:
+  postgres_monorepo:
     driver: local
