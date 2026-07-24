@@ -8,3 +8,7 @@
 npx @nestjs/cli generate resource achievements --no-spec
 
 pnpm start:dev
+
+
+???
+document.querySelectorAll('div[class^="TruncatedText"]').forEach(el => console.log(el.textContent));
