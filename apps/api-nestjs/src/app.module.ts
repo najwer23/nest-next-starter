@@ -5,6 +5,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { DatabaseGQLModule } from './databaseGQL/databaseGQL.module';
 import { HealthModule } from './health/health.module';
+import { DatabaseRestModule } from './database-rest/database-rest.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { HealthModule } from './health/health.module';
     }),
     HealthModule,
     DatabaseGQLModule,
+    DatabaseRestModule,
   ],
   providers: [],
 })
