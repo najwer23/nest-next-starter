@@ -5,20 +5,6 @@
 
 ## Run standalone
 
-```bash
-cp .env.example .env
-docker compose up -d db          # from repo root
-pnpm prisma migrate dev
-pnpm prisma db seed
+npx @nestjs/cli generate resource achievements --no-spec
+
 pnpm start:dev
-
-npx prisma studio  
-```
-
-## Tests
-
-```bash
-pnpm test          # unit
-pnpm test:e2e      # e2e (requires running database)
-pnpm test:cov      # coverage
-```
