@@ -1,7 +1,15 @@
-export default function Home() {
+import Link from 'next/link';
+
+export default function Page() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gray-100">
-      <h1 className="text-4xl font-bold text-blue-600">Tailwind works 🎉</h1>
-    </main>
+    <div className="flex gap-4 mt-6 ml-6">
+      <Link href="/database-gql" className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
+        /database-gql
+      </Link>
+
+      <Link href="/database-rest" className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700">
+        /database-rest
+      </Link>
+    </div>
   );
 }
